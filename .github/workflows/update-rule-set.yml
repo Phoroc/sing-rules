@@ -1,0 +1,55 @@
+name: Update sing-box rule-set
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  update-rule-set:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+    - name: Install Python dependencies
+      run: |
+        set -euo pipefail
+        python -m pip install --upgrade pip
+        pip install requests==2.31.0
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Setup sing-box
+      env:
+        SING_BOX_DEB_URL: https://github.com/SagerNet/sing-box/releases/download/v1.8.0-rc.5/sing-box_1.8.0-rc.5_linux_amd64.deb
+      run: |
+        set -euo pipefail
+        wget -O sing-box.deb $SING_BOX_DEB_URL
+        sudo dpkg -i sing-box.deb
+    - name: Update rules
+      run: |
+        set -euo pipefail
+        python3 generate_rule_set.py
+    - name: Commit and push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        set -euo pipefail
+        cd rule-set
+        git init
+        git config --local user.email "github-action@users.noreply.github.com"
+        git config --local user.name "GitHub Action"
+        git remote add origin https://github-action:$GITHUB_TOKEN@github.com/Phoroc/sing-rules.git
+        git branch -M rule-set
+        git add .
+        git commit --allow-empty-message --no-edit
+        git push -f origin rule-set
