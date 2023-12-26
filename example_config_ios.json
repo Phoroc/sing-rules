@@ -29,6 +29,12 @@
         "format": "binary",
         "url": "https://raw.githubusercontent.com/Phoroc/sing-box-rule-set/rule-set/multi-onlydomains.txt.srs"
       }
+    ],
+    "rules": [
+      {
+        "protocol": "dns",
+        "outbound": "dns-out"
+      },
     ]
   },
   "inbounds": [
