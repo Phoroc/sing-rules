@@ -27,7 +27,7 @@
         "tag": "hagezi-normal",
         "type": "remote",
         "format": "binary",
-        "url": "https://raw.githubusercontent.com/Phoroc/sing-box-rule-set/rule-set/multi-onlydomains.txt.srs"
+        "url": "https://raw.githubusercontent.com/Phoroc/sing-rules/rule-set/hagezi-normal.srs"
       }
     ],
     "rules": [
