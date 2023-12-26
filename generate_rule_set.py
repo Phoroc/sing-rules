@@ -30,7 +30,7 @@ def convert_domains(url: str) -> str:
         "version": 1,
         "rules": [
             {
-                "domain": []
+                "domain": [],
                 "domain_suffix": []
             }
         ]
