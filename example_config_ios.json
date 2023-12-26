@@ -34,7 +34,7 @@
       {
         "protocol": "dns",
         "outbound": "dns-out"
-      },
+      }
     ]
   },
   "inbounds": [
