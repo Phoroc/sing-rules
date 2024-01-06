@@ -26,24 +26,20 @@ output_dir = "./rule-set"
 def convert_domains(list_info: list) -> str:
     r = requests.get(list_info[1])
     domain_list = []
-    domain_suffix_list = []
     if r.status_code == 200:
         lines = r.text.splitlines()
         for line in lines:
             if not line.startswith("#") and line.strip():
                 domain_list.append(line)
-                domain_suffix_list.append("." + line)
     result = {
         "version": 1,
         "rules": [
             {
-                "domain": [],
                 "domain_suffix": []
             }
         ]
     }
-    result["rules"][0]["domain"] = domain_list
-    result["rules"][0]["domain_suffix"] = domain_suffix_list
+    result["rules"][0]["domain_suffix"] = domain_list
     filepath = os.path.join(output_dir, list_info[0] + ".json")
     with open(filepath, "w") as f:
         f.write(json.dumps(result, indent=2))
